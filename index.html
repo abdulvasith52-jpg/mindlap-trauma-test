@@ -23,7 +23,6 @@
       padding:25px;
       border-radius:25px;
       box-shadow:0 10px 35px rgba(0,0,0,0.08);
-      overflow: visible;
     }
 
     .logo{
@@ -60,8 +59,6 @@
 
     .field{
       margin-bottom:18px;
-      position: relative;
-      overflow: visible;
     }
 
     label{
@@ -150,39 +147,6 @@
 
     .iti{
       width:100%;
-      position:relative;
-      z-index:30;
-    }
-
-    .iti input{
-      width:100% !important;
-      padding-left:92px !important;
-      border-radius:12px;
-    }
-
-    .iti__selected-flag{
-      border-radius:12px 0 0 12px;
-    }
-
-    .iti__country-list{
-      z-index:2147483647 !important;
-      background:#ffffff !important;
-      color:#111111 !important;
-      border:1px solid rgba(0,0,0,0.10) !important;
-      border-radius:16px !important;
-      box-shadow:0 16px 40px rgba(0,0,0,0.18) !important;
-      max-height:280px !important;
-      overflow-y:auto !important;
-      opacity:1 !important;
-    }
-
-    .iti__country-list *{
-      color:#111111 !important;
-    }
-
-    .iti__search-input{
-      background:#ffffff !important;
-      color:#111111 !important;
     }
 
     @media(max-width:768px){
@@ -232,14 +196,14 @@
 
     <form id="testForm"></form>
 
-    <button type="button" id="submitBtn">Submit Test</button>
+    <button type="button" onclick="submitTest()">Submit Test</button>
 
     <div class="result" id="resultBox">
       <h2 id="scoreText"></h2>
       <h3 id="resultTitle"></h3>
       <p id="resultDesc"></p>
 
-      <button type="button" class="whatsapp-btn" id="whatsappBtn">
+      <button type="button" class="whatsapp-btn" onclick="openWhatsApp()">
         Connect with us
       </button>
     </div>
@@ -297,39 +261,10 @@
       initialCountry: "in",
       separateDialCode: true,
       preferredCountries: ["in", "ae", "qa", "sa", "kw", "us", "gb"],
-      allowDropdown: true,
-      dropdownContainer: document.body,
-      nationalMode: false,
       utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
     });
 
-    const SHEET_URL = "https://script.google.com/macros/s/AKfycbwaBe654YljcA92cJtsFrhrZzj9U9wnJROzP8F0qzkGYvz9hyGj9ZTjSIfOXrsGVpje/exec";
-
     let whatsappMessage = "Hello, I completed the MindLap PTSD Self-Awareness Test and would like to connect with your team.";
-
-    function getResult(total) {
-      if (total <= 10) {
-        return {
-          title: "Mild Stress Response",
-          desc: "You may be experiencing some stress-related symptoms, but they may be mild. Rest, support, and self-care may help."
-        };
-      } else if (total <= 20) {
-        return {
-          title: "Moderate Trauma Symptoms",
-          desc: "You may be showing some noticeable trauma-related signs. A supportive conversation or professional guidance may help."
-        };
-      } else if (total <= 30) {
-        return {
-          title: "High Emotional Distress",
-          desc: "Your emotional wellbeing may be strongly affected. Professional support could be beneficial."
-        };
-      } else {
-        return {
-          title: "Severe PTSD Symptoms",
-          desc: "Your emotional state may be strongly affecting your daily functioning and wellbeing. Speaking with a qualified mental health professional is strongly recommended."
-        };
-      }
-    }
 
     async function submitTest() {
       const fullname = document.getElementById("fullname").value.trim();
@@ -354,14 +289,29 @@
         total += Number(val);
       }
 
-      const result = getResult(total);
+      let title = "";
+      let desc = "";
+
+      if (total <= 10) {
+        title = "Mild Stress Response";
+        desc = "You may be experiencing some stress-related symptoms, but they may be mild. Rest, support, and self-care may help.";
+      } else if (total <= 20) {
+        title = "Moderate Trauma Symptoms";
+        desc = "You may be showing some noticeable trauma-related signs. A supportive conversation or professional guidance may help.";
+      } else if (total <= 30) {
+        title = "High Emotional Distress";
+        desc = "Your emotional wellbeing may be strongly affected. Professional support could be beneficial.";
+      } else {
+        title = "Severe PTSD Symptoms";
+        desc = "Your emotional state may be strongly affecting your daily functioning and wellbeing. Speaking with a qualified mental health professional is strongly recommended.";
+      }
 
       document.getElementById("scoreText").innerText = `Hey ${fullname}, your score is ${total}/45`;
-      document.getElementById("resultTitle").innerText = result.title;
-      document.getElementById("resultDesc").innerText = result.desc;
+      document.getElementById("resultTitle").innerText = title;
+      document.getElementById("resultDesc").innerText = desc;
       document.getElementById("resultBox").style.display = "block";
 
-      await fetch(SHEET_URL, {
+      await fetch("https://script.google.com/macros/s/AKfycbwaBe654YljcA92cJtsFrhrZzj9U9wnJROzP8F0qzkGYvz9hyGj9ZTjSIfOXrsGVpje/exec", {
         method: "POST",
         mode: "no-cors",
         headers: {
@@ -373,7 +323,7 @@
           phone,
           age,
           score: total,
-          result: result.title,
+          result: title,
           answers: Array.from({ length: 15 }, (_, i) => document.getElementById(`q${i + 1}`).value),
           type: "PTSD Test"
         })
@@ -386,9 +336,6 @@
       const url = `https://wa.me/918590991552?text=${encodeURIComponent(whatsappMessage)}`;
       window.open(url, "_blank");
     }
-
-    document.getElementById("submitBtn").addEventListener("click", submitTest);
-    document.getElementById("whatsappBtn").addEventListener("click", openWhatsApp);
   </script>
 </body>
 </html>
