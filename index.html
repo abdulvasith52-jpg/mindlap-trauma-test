@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MindLap PTSD Test</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css"/>
+
+  <style>
+    body{
+      font-family: Arial, sans-serif;
+      background:#f7f4ff;
+      margin:0;
+      padding:20px;
+      color:#111;
+    }
+
+    .container{
+      max-width:820px;
+      margin:auto;
+      background:white;
+      padding:25px;
+      border-radius:25px;
+      box-shadow:0 10px 35px rgba(0,0,0,0.08);
+      overflow: visible;
+    }
+
+    .logo{
+      text-align:center;
+      font-size:44px;
+      font-weight:900;
+      margin-bottom:10px;
+      letter-spacing:-2px;
+      line-height:1;
+    }
+
+    .logo .mind{
+      color:#111;
+    }
+
+    .logo .lap{
+      color:#8b5cf6;
+    }
+
+    h1{
+      text-align:center;
+      color:#6d28d9;
+      margin:0 0 12px;
+      font-size:32px;
+    }
+
+    .subtitle{
+      text-align:center;
+      color:#666;
+      margin-bottom:26px;
+      line-height:1.6;
+      font-size:15px;
+    }
+
+    .field{
+      margin-bottom:18px;
+      position: relative;
+      overflow: visible;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:bold;
+      color:#4c1d95;
+    }
+
+    input,
+    select{
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:1px solid #d8c6ff;
+      font-size:15px;
+      box-sizing:border-box;
+      background:#fff;
+    }
+
+    .question{
+      background:#faf7ff;
+      padding:18px;
+      border-radius:18px;
+      margin-bottom:15px;
+      border:1px solid #e9ddff;
+    }
+
+    .question p{
+      margin-top:0;
+      font-weight:bold;
+      line-height:1.5;
+      margin-bottom:12px;
+    }
+
+    button{
+      width:100%;
+      padding:16px;
+      border:none;
+      border-radius:15px;
+      background:#7c3aed;
+      color:white;
+      font-size:16px;
+      font-weight:bold;
+      cursor:pointer;
+      margin-top:10px;
+    }
+
+    button:hover{
+      background:#6d28d9;
+    }
+
+    .result{
+      display:none;
+      margin-top:25px;
+      background:#faf5ff;
+      padding:25px;
+      border-radius:20px;
+      border:1px solid #e9d5ff;
+    }
+
+    .result h2{
+      color:#6d28d9;
+      margin-top:0;
+      line-height:1.4;
+    }
+
+    .whatsapp-btn{
+      background:#25D366;
+      margin-top:15px;
+    }
+
+    .whatsapp-btn:hover{
+      background:#1ebe5d;
+    }
+
+    .notice{
+      margin-top:25px;
+      font-size:14px;
+      color:#666;
+      line-height:1.6;
+      background:#faf7ff;
+      padding:15px;
+      border-radius:15px;
+    }
+
+    .iti{
+      width:100%;
+      position:relative;
+      z-index:30;
+    }
+
+    .iti input{
+      width:100% !important;
+      padding-left:92px !important;
+      border-radius:12px;
+    }
+
+    .iti__selected-flag{
+      border-radius:12px 0 0 12px;
+    }
+
+    .iti__country-list{
+      z-index:2147483647 !important;
+      background:#ffffff !important;
+      color:#111111 !important;
+      border:1px solid rgba(0,0,0,0.10) !important;
+      border-radius:16px !important;
+      box-shadow:0 16px 40px rgba(0,0,0,0.18) !important;
+      max-height:280px !important;
+      overflow-y:auto !important;
+      opacity:1 !important;
+    }
+
+    .iti__country-list *{
+      color:#111111 !important;
+    }
+
+    .iti__search-input{
+      background:#ffffff !important;
+      color:#111111 !important;
+    }
+
+    @media(max-width:768px){
+      .container{
+        padding:18px;
+      }
+
+      .logo{
+        font-size:34px;
+      }
+
+      h1{
+        font-size:26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="logo">
+      <span class="mind">Mind</span><span class="lap">Lap</span>
+    </div>
+
+    <h1>PTSD Self-Awareness Test</h1>
+
+    <div class="subtitle">
+      A simple trauma and stress self-awareness screening tool.<br>
+      Answer based on your experiences during the last month.
+    </div>
+
+    <div class="field">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" placeholder="Enter full name">
+    </div>
+
+    <div class="field">
+      <label for="phone">Phone Number</label>
+      <input id="phone" type="tel" placeholder="Enter phone number" />
+    </div>
+
+    <div class="field">
+      <label for="age">Age</label>
+      <input type="number" id="age" placeholder="Enter age">
+    </div>
+
+    <form id="testForm"></form>
+
+    <button type="button" id="submitBtn">Submit Test</button>
+
+    <div class="result" id="resultBox">
+      <h2 id="scoreText"></h2>
+      <h3 id="resultTitle"></h3>
+      <p id="resultDesc"></p>
+
+      <button type="button" class="whatsapp-btn" id="whatsappBtn">
+        Connect with us
+      </button>
+    </div>
+
+    <div class="notice">
+      This test is for self-awareness purposes only and not a medical diagnosis.
+      If distress is affecting your daily life, consider speaking with a qualified mental health professional.
+    </div>
+
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"></script>
+
+  <script>
+    const questions = [
+      "Do distressing memories suddenly come back to you unexpectedly?",
+      "Do you experience nightmares related to stressful or traumatic events?",
+      "Do certain sounds, places, or situations trigger emotional discomfort?",
+      "Do you avoid thinking or talking about painful experiences?",
+      "Do you feel emotionally numb or disconnected from others?",
+      "Do you easily become startled or feel constantly alert?",
+      "Do you often feel unsafe even in normal situations?",
+      "Do you struggle to sleep because your mind feels restless?",
+      "Do you feel guilt or blame yourself for past experiences?",
+      "Do you feel emotionally exhausted frequently?",
+      "Do sudden memories affect your mood strongly?",
+      "Do you avoid crowded or stressful environments?",
+      "Do you feel difficulty trusting people after painful experiences?",
+      "Do emotional triggers affect your daily functioning?",
+      "Do you feel emotionally overwhelmed without fully understanding why?"
+    ];
+
+    const form = document.getElementById("testForm");
+
+    questions.forEach((q, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `
+        <p>${index + 1}. ${q}</p>
+        <select id="q${index + 1}">
+          <option value="">Select answer</option>
+          <option value="0">Never</option>
+          <option value="1">Sometimes</option>
+          <option value="2">Often</option>
+          <option value="3">Almost every day</option>
+        </select>
+      `;
+      form.appendChild(div);
+    });
+
+    const phoneInput = document.querySelector("#phone");
+
+    const iti = window.intlTelInput(phoneInput, {
+      initialCountry: "in",
+      separateDialCode: true,
+      preferredCountries: ["in", "ae", "qa", "sa", "kw", "us", "gb"],
+      allowDropdown: true,
+      dropdownContainer: document.body,
+      nationalMode: false,
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+    });
+
+    const SHEET_URL = "https://script.google.com/macros/s/AKfycbwaBe654YljcA92cJtsFrhrZzj9U9wnJROzP8F0qzkGYvz9hyGj9ZTjSIfOXrsGVpje/exec";
+
+    let whatsappMessage = "Hello, I completed the MindLap PTSD Self-Awareness Test and would like to connect with your team.";
+
+    function getResult(total) {
+      if (total <= 10) {
+        return {
+          title: "Mild Stress Response",
+          desc: "You may be experiencing some stress-related symptoms, but they may be mild. Rest, support, and self-care may help."
+        };
+      } else if (total <= 20) {
+        return {
+          title: "Moderate Trauma Symptoms",
+          desc: "You may be showing some noticeable trauma-related signs. A supportive conversation or professional guidance may help."
+        };
+      } else if (total <= 30) {
+        return {
+          title: "High Emotional Distress",
+          desc: "Your emotional wellbeing may be strongly affected. Professional support could be beneficial."
+        };
+      } else {
+        return {
+          title: "Severe PTSD Symptoms",
+          desc: "Your emotional state may be strongly affecting your daily functioning and wellbeing. Speaking with a qualified mental health professional is strongly recommended."
+        };
+      }
+    }
+
+    async function submitTest() {
+      const fullname = document.getElementById("fullname").value.trim();
+      const age = document.getElementById("age").value.trim();
+      const phone = iti.getNumber();
+
+      if (!fullname || !phone || !age) {
+        alert("Please fill full name, phone number, and age.");
+        return;
+      }
+
+      let total = 0;
+
+      for (let i = 1; i <= 15; i++) {
+        const val = document.getElementById(`q${i}`).value;
+
+        if (val === "") {
+          alert("Please answer all questions.");
+          return;
+        }
+
+        total += Number(val);
+      }
+
+      const result = getResult(total);
+
+      document.getElementById("scoreText").innerText = `Hey ${fullname}, your score is ${total}/45`;
+      document.getElementById("resultTitle").innerText = result.title;
+      document.getElementById("resultDesc").innerText = result.desc;
+      document.getElementById("resultBox").style.display = "block";
+
+      await fetch(SHEET_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          fullname,
+          phone,
+          age,
+          score: total,
+          result: result.title,
+          answers: Array.from({ length: 15 }, (_, i) => document.getElementById(`q${i + 1}`).value),
+          type: "PTSD Test"
+        })
+      });
+
+      document.getElementById("resultBox").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function openWhatsApp() {
+      const url = `https://wa.me/918590991552?text=${encodeURIComponent(whatsappMessage)}`;
+      window.open(url, "_blank");
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", submitTest);
+    document.getElementById("whatsappBtn").addEventListener("click", openWhatsApp);
+  </script>
+</body>
+</html>
